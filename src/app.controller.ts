@@ -1,5 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { CreateNotificationBody } from './create-notification-body';
+import { PrismaService } from './prisma.service';
 
 @Controller('notifications')
 export class AppController {
@@ -10,5 +11,13 @@ export class AppController {
   async getNotifications() {
     return await this.prisma.notification.findMany();
   }
+
+  @Post()
+  async createNotification(@Body() body: CreateNotificationBody) {
+    return await this.prisma.notification.create({
+      data: {
+        ...body,
+      },
+    });
   }
 }
